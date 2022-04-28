@@ -10,6 +10,7 @@ import static spark.Spark.post;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import spark.ModelAndView;
 import spark.template.mustache.MustacheTemplateEngine;
 
@@ -31,36 +32,31 @@ public class App {
     }
 
     public static void main(String[] args) {
-        int port = Integer.parseInt(System.getenv("PORT"));
-        port(port);
         
         port(getHerokuAssignedPort());
+
         get("/", (req, res) -> "Hello, World");
         post("/compute", (req, res) -> {
         //System.out.println(req.queryParams("input1"));
         //System.out.println(req.queryParams("input2"));
-        String input1 = req.queryParams("input1");
-        java.util.Scanner sc1 = new java.util.Scanner(input1);
-        sc1.useDelimiter("[;\r\n]+");
-        java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
-        while (sc1.hasNext())
-        {
-        int value = Integer.parseInt(sc1.next().replaceAll("\\s",""));
-        inputList.add(value);
-        }
-        sc1.close();
-        System.out.println(inputList);
+        String input4 = req.queryParams("input4");
+        
         String input2 = req.queryParams("input2").replaceAll("\\s","");
-        int input2AsInt = Integer.parseInt(input2);
-        boolean result = App.search(inputList, input2AsInt);
-        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        
+        String input3 = req.queryParams("input3").replaceAll("\\s","");
+        //
+        String input1 = req.queryParams("input1").replaceAll("\\s","");
+        //
+        Double result = App.input_controls(input4, input1, input2, input3);
+
+        Map<String, Double> map = new HashMap<String, Double>();
         map.put("result", result);
         return new ModelAndView(map, "compute.mustache");
         }, new MustacheTemplateEngine());
         get("/compute",
         (rq, rs) -> {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("result", "not computed yet!");
+        map.put("result", "Hesaplama yapılmadı.!");
         return new ModelAndView(map, "compute.mustache");
         },
         new MustacheTemplateEngine());
@@ -73,4 +69,44 @@ public class App {
             }
             return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
         }
+
+        public static Double input_controls(String input4, String input1, String input2, String input3){
+
+        if(input4 == "" || input1 == "" || input2 == "" || input3 == ""){
+            return 0.0;
+        }
+
+        if(input1.length()!=9){
+            return 0.0;
+        }
+
+        int input2AsInt = Integer.parseInt(input2);
+        int input3AsInt = Integer.parseInt(input3);
+
+        java.util.Scanner sc1 = new java.util.Scanner(input4);
+        sc1.useDelimiter("[;\r\n]+");
+        java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
+        while (sc1.hasNext())
+        {
+        int value = Integer.parseInt(sc1.next().replaceAll("\\s",""));
+        inputList.add(value);
+        }
+        sc1.close();
+
+        if (inputList.size()<=1){
+            return 0.0;
+        }
+
+        int sum = 0;
+        
+        for(int num : inputList){
+            sum = sum+num;
+        }
+
+        Double result = input2AsInt*0.20 + input3AsInt*0.20 + (sum/inputList.size())*0.60;
+
+        System.out.println(result);
+
+        return result;
+    }
 }

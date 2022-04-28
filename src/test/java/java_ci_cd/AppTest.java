@@ -30,9 +30,35 @@ class AppTest {
         ArrayList<Integer> array = new ArrayList<>();
         assertFalse(App.search(array,4));   
     }
+
     @Test
-    public void testNull(){
-        assertFalse(App.search(null,1));   
+    public void zeroAllNotes(){
+        assertEquals(App.input_controls("0","180303024","0","0"),0);
+        //Öğrenci notlarının sıfır girilmesi durumları   
+    }
+
+    @Test
+    public void nullNotes(){
+        assertEquals(App.input_controls("","","",""), 0.0);   
+        //İnputların boş gelmesi durumları
+    }
+
+    @Test
+    public void noteExampleControl(){
+        assertEquals(App.input_controls("100\n100", "180303024", "100", "100"), 100.0);   
+        //Sonuc notunun dogru olup olmaması durumu
+    }
+
+    @Test
+    public void studentNoLengthControl(){
+        assertEquals(App.input_controls("100\n100", "012", "100", "100"), 0.0);   
+        //Öğrenci numarasının 9 haneden oluşup oluşmaması durumu
+    }
+
+    @Test
+    public void quizMultiControl(){
+        assertEquals(App.input_controls("100", "012", "100", "100"), 0.0);   
+        //Tek quizden girilmesi durumu
     }
 
 }
