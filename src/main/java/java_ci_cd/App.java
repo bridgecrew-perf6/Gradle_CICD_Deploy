@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import spark.ModelAndView;
 import spark.template.mustache.MustacheTemplateEngine;
-import java.util.logging.Logger;
 
 public class App {
     public String getGreeting() {
