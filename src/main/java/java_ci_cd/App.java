@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import spark.ModelAndView;
 import spark.template.mustache.MustacheTemplateEngine;
-
+import java.util.logging.Logger;
 
 public class App {
     public String getGreeting() {
@@ -32,6 +32,9 @@ public class App {
     }
 
     public static void main(String[] args) {
+        int port = Integer.parseInt(System.getenv("PORT"));
+        port(port);
+        
         port(getHerokuAssignedPort());
         get("/", (req, res) -> "Hello, World");
         post("/compute", (req, res) -> {
