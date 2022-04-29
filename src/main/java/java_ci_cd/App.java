@@ -35,7 +35,7 @@ public class App {
         
         port(getHerokuAssignedPort());
 
-        get("/", (req, res) -> "Hello, World");  //TEST GET ISTEGI
+        get("/", (req, res) -> "Hi!");  //TEST GET ISTEGI
         post("/compute", (req, res) -> {   //POST ISTEGI
 
         String input4 = req.queryParams("input4");
