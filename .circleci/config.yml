@@ -5,4 +5,6 @@ jobs:
     steps:
       - checkout
       - run: java --version
-      - run: node --version
+      - run: gradle --version
+      - run: gradle build
+      - run: gradle test
