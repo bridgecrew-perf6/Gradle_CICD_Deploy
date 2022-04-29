@@ -15,13 +15,13 @@ import spark.ModelAndView;
 import spark.template.mustache.MustacheTemplateEngine;
 
 public class App {
-    public String getGreeting() {
+    public String getGreeting() {   //TEST
         return "Hello world.";
     }
 
     public static boolean search(ArrayList<Integer> array, int e)
     {
-        System.out.println("Inside Search");
+        System.out.println("Inside Search");  //TEST
         if(array==null) return false;
         for(int e1t:array){
             if(e1t==e){
@@ -35,34 +35,33 @@ public class App {
         
         port(getHerokuAssignedPort());
 
-        get("/", (req, res) -> "Hello, World");
-        post("/compute", (req, res) -> {
-        //System.out.println(req.queryParams("input1"));
-        //System.out.println(req.queryParams("input2"));
+        get("/", (req, res) -> "Hello, World");  //TEST GET ISTEGI
+        post("/compute", (req, res) -> {   //POST ISTEGI
+
         String input4 = req.queryParams("input4");
-        
+        // BOSLUKLU STRING GIRDISI. QUIZLER ICIN
         String input2 = req.queryParams("input2").replaceAll("\\s","");
-        
+        //VIZE 1
         String input3 = req.queryParams("input3").replaceAll("\\s","");
-        //
+        //VIZE 2
         String input1 = req.queryParams("input1").replaceAll("\\s","");
-        //
+        //OGRENCI NUMARASI
         Double result = App.input_controls(input4, input1, input2, input3);
 
         Map<String, Double> map = new HashMap<String, Double>();
-        map.put("result", result);
+        map.put("result", result);  //RESULTUN GET ILE GONDERILECEK KISIM
         return new ModelAndView(map, "compute.mustache");
         }, new MustacheTemplateEngine());
         get("/compute",
         (rq, rs) -> {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("result", "Hesaplama yapılmadı.!");
+        map.put("result", "Hesaplama yapılmadı.!");  //HATALI HESAPLAMA DURUMU
         return new ModelAndView(map, "compute.mustache");
         },
-        new MustacheTemplateEngine());
+        new MustacheTemplateEngine());  //TEMPLATE'IN CEKILMESI
         }
 
-        static int getHerokuAssignedPort() {
+        static int getHerokuAssignedPort() {  //PORT AYARLANMASI
             ProcessBuilder processBuilder = new ProcessBuilder();
             if (processBuilder.environment().get("PORT") != null) {
             return Integer.parseInt(processBuilder.environment().get("PORT"));
@@ -70,20 +69,20 @@ public class App {
             return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
         }
 
-        public static Double input_controls(String input4, String input1, String input2, String input3){
+        public static Double input_controls(String input4, String input1, String input2, String input3){  //INPUTLARIN ISLEME ALINDIGI KISIM
 
         if(input4 == "" || input1 == "" || input2 == "" || input3 == ""){
-            return 0.0;
+            return 0.0;  //INPUTLARIN BOS OLMASI DURUMUNDA 0 DONDURULECEK
         }
 
-        if(input1.length()!=9){
+        if(input1.length()!=9){  //OGRENCI NUMARASI 9 HANELI OLMALI ; 180303024
             return 0.0;
         }
 
         int input2AsInt = Integer.parseInt(input2);
-        int input3AsInt = Integer.parseInt(input3);
+        int input3AsInt = Integer.parseInt(input3);  //INTEGER DONUSUMU
 
-        java.util.Scanner sc1 = new java.util.Scanner(input4);
+        java.util.Scanner sc1 = new java.util.Scanner(input4);   //QUIZLERIN BOSLUKLARA GORE AYRILMASI
         sc1.useDelimiter("[;\r\n]+");
         java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
         while (sc1.hasNext())
@@ -93,19 +92,17 @@ public class App {
         }
         sc1.close();
 
-        if (inputList.size()<=1){
+        if (inputList.size()<=1){  //EN AZ 2 QUIZ GIRILMESI GEREK
             return 0.0;
         }
 
         int sum = 0;
         
         for(int num : inputList){
-            sum = sum+num;
+            sum = sum+num;  //QUIZLERIN ORTALAMASININ ALINMASI
         }
 
-        Double result = input2AsInt*0.20 + input3AsInt*0.20 + (sum/inputList.size())*0.60;
-
-        System.out.println(result);
+        Double result = input2AsInt*0.20 + input3AsInt*0.20 + (sum/inputList.size())*0.60;  //QUIZLER %60 ETKILERKEN VIZELERIN HER BIRI %20 ETKILEMEKTE
 
         return result;
     }

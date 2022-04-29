@@ -31,6 +31,11 @@ class AppTest {
         assertFalse(App.search(array,4));   
     }
 
+    //UST KISIMDA ORNEK TESTLER BULUNMAKTA
+
+
+    //INPUT CONTROL KISIMLARI
+
     @Test
     public void zeroAllNotes(){
         assertEquals(App.input_controls("0","180303024","0","0"),0);
